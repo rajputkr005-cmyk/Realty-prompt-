@@ -1,0 +1,25 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { verifyToken } from '@/lib/auth';
+
+export function middleware(request: NextRequest) {
+  const token = request.cookies.get('auth-token')?.value;
+  const { pathname } = request.nextUrl;
+
+  // Public routes
+  const publicRoutes = ['/', '/login', '/signup', '/api/auth/signup', '/api/auth/login'];
+  
+  if (publicRoutes.includes(pathname)) {
+    return NextResponse.next();
+  }
+
+  // Protected routes
+  if (!token || !verifyToken(token)) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/((?!api/auth|_next/static|_next/image|favicon.ico).*)'],
+};
