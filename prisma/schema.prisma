@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  passwordHash      String
+  stripeCustomerId  String?   @unique
+  plan              String   @default("free") // "free" or "pro"
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  usage             Usage? 
+  @@map("users")
+}
+
+model Usage {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields:  [userId], references: [id], onDelete: Cascade)
+  generationsUsed   Int      @default(0)
+  resetAt           DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("usage")
+}
+
+model Listing {
+  id                String   @id @default(cuid())
+  userId            String
+  propertyType      String
+  bedrooms          Int
+  city              String
+  keyFeatures       String
+  tone              String
+  generatedText     String   @db.Text
+  createdAt         DateTime @default(now())
+
+  @@map("listings")
+}
