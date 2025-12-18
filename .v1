@@ -1,0 +1,18 @@
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/realty_prompt"
+
+# Auth
+JWT_SECRET="your_jwt_secret_key_here_min_32_chars"
+
+# Stripe
+STRIPE_PUBLIC_KEY="pk_test_..."
+STRIPE_SECRET_KEY="sk_test_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
+NEXT_PUBLIC_STRIPE_PUBLIC_KEY="pk_test_..."
+
+# OpenAI
+OPENAI_API_KEY="sk-..."
+
+# App
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+NODE_ENV="development"
